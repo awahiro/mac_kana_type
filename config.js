@@ -136,6 +136,30 @@ const PROBLEM_FILES = [
         texts: []
     },
     {
+        id: 'row3_asdf',
+        name: '3段目（asdf列）練習',
+        path: './problem/row3_asdf.txt',
+        texts: []
+    },
+    {
+        id: 'row2_qwerty',
+        name: '2段目（qwerty列）練習',
+        path: './problem/row2_qwerty.txt',
+        texts: []
+    },
+    {
+        id: 'row4_zxcv',
+        name: '4段目（zxcv列）練習',
+        path: './problem/row4_zxcv.txt',
+        texts: []
+    },
+    {
+        id: 'row1_numbers',
+        name: '1段目（数字列）練習',
+        path: './problem/row1_numbers.txt',
+        texts: []
+    },
+    {
         id: 'basic_hiragana',
         name: '基本文字',
         path: './problem/basic_hiragana.txt',
