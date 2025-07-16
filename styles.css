@@ -175,7 +175,7 @@ h1 {
     border-radius: 5px;
     min-height: 100px;
     display: flex;
-    align-items: center;
+    align-items: end;
     justify-content: center;
 }
 
