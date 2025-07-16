@@ -21,6 +21,7 @@ class TypingApp {
         this.createKeyboard();
         this.loadProblems();
         this.loadNewText();
+        this.showRanking();
     }
     
     initializeElements() {
