@@ -160,6 +160,30 @@ const PROBLEM_FILES = [
         texts: []
     },
     {
+        id: 'daku_row3_asdf',
+        name: '濁点・小書き 3段目（asdf列）練習',
+        path: './problem/daku_row3_asdf.txt',
+        texts: []
+    },
+    {
+        id: 'daku_row2_qwerty',
+        name: '濁点・小書き 2段目（qwerty列）練習',
+        path: './problem/daku_row2_qwerty.txt',
+        texts: []
+    },
+    {
+        id: 'daku_row4_zxcv',
+        name: '濁点・小書き 4段目（zxcv列）練習',
+        path: './problem/daku_row4_zxcv.txt',
+        texts: []
+    },
+    {
+        id: 'daku_row1_numbers',
+        name: '濁点・小書き 1段目（数字列）練習',
+        path: './problem/daku_row1_numbers.txt',
+        texts: []
+    },
+    {
         id: 'basic_hiragana',
         name: '基本文字',
         path: './problem/basic_hiragana.txt',

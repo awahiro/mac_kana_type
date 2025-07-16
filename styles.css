@@ -200,6 +200,11 @@ h1 {
     padding: 10px;
     background-color: #f0f0f0;
     border-radius: 5px;
+    transition: background-color 0.1s;
+}
+
+.keyboard-layout.error-background {
+    background-color: rgba(255, 17, 0, 0.548);
 }
 
 .keyboard-row {
@@ -292,9 +297,6 @@ h1 {
     font-weight: bold;
 }
 
-.key:hover {
-    background-color: #e0e0e0;
-}
 
 .key.next-key {
     outline-color: #2196F3 !important;
@@ -315,9 +317,9 @@ h1 {
 }
 
 .key.shift-pressed {
-    background-color: #FF9800 !important;
-    color: white !important;
-    transition: background-color 0.1s;
+    outline-color: #8BC34A !important;
+    box-shadow: 0 0 8px rgba(139, 195, 74, 0.4);
+    transition: outline-color 0.1s, box-shadow 0.1s;
 }
 
 .key.key-pressed {
@@ -604,6 +606,20 @@ h1 {
 
 .ranking-table .score {
     font-weight: bold;
+    color: #4CAF50;
+}
+
+.ranking-table .mode {
+    font-size: 12px;
+    color: #666;
+}
+
+.ranking-table .time {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.ranking-table .correct-count {
     color: #4CAF50;
 }
 

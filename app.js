@@ -37,11 +37,9 @@ class TypingApp {
         // 結果表示用の要素
         this.resultDisplay = document.getElementById('resultDisplay');
         this.currentResult = document.getElementById('currentResult');
-        this.showRankingButton = document.getElementById('showRankingButton');
         this.retryButton = document.getElementById('retryButton');
         this.rankingDisplay = document.getElementById('rankingDisplay');
         this.rankingTableBody = document.getElementById('rankingTableBody');
-        this.closeRankingButton = document.getElementById('closeRankingButton');
         
         // リアルタイム表示用の要素
         this.statsDisplay = document.getElementById('statsDisplay');
@@ -76,12 +74,12 @@ class TypingApp {
             if (this.isActive) {
                 this.resetTyping();
             }
+            // ランキング表示を更新
+            this.showRanking();
         });
         
         // 結果表示用のイベントリスナー
-        this.showRankingButton.addEventListener('click', () => this.showRanking());
         this.retryButton.addEventListener('click', () => this.retryTyping());
-        this.closeRankingButton.addEventListener('click', () => this.closeRanking());
         
         document.addEventListener('keydown', (e) => {
             e.preventDefault();
@@ -265,7 +263,6 @@ class TypingApp {
         
         // 結果表示を隠す
         this.resultDisplay.style.display = 'none';
-        this.rankingDisplay.style.display = 'none';
         
         // タイマー開始
         this.startTimer();
@@ -465,6 +462,9 @@ class TypingApp {
         // 結果を計算して表示
         this.calculateAndShowResult();
         
+        // ランキングを更新
+        this.showRanking();
+        
         // 次回のために最初のテキストに戻す
         this.currentTextIndex = 0;
         setTimeout(() => {
@@ -492,12 +492,17 @@ class TypingApp {
             errorCount: this.errorCount,
             correctCount: this.correctCount,
             timeInSeconds: timeInSeconds,
+            problemId: this.currentProblem,
             problemType: this.getCurrentProblemName(),
+            mode: this.isEasyMode ? '簡単モード' : '普通モード',
             date: new Date().toISOString()
         };
         
-        // ローカルストレージから既存の結果を取得
-        let results = JSON.parse(localStorage.getItem('typingResults') || '[]');
+        // 問題ごとのランキングキーを作成
+        const rankingKey = `typingResults_${this.currentProblem}`;
+        
+        // 該当問題のランキングを取得
+        let results = JSON.parse(localStorage.getItem(rankingKey) || '[]');
         
         // 新しい結果を追加
         results.push(result);
@@ -505,13 +510,13 @@ class TypingApp {
         // 点数でソート（降順）
         results.sort((a, b) => b.score - a.score);
         
-        // トップ100のみ保持
-        if (results.length > 100) {
-            results = results.slice(0, 100);
+        // トップ50のみ保持
+        if (results.length > 50) {
+            results = results.slice(0, 50);
         }
         
         // ローカルストレージに保存
-        localStorage.setItem('typingResults', JSON.stringify(results));
+        localStorage.setItem(rankingKey, JSON.stringify(results));
     }
     
     getCurrentProblemName() {
@@ -551,37 +556,46 @@ class TypingApp {
     
     retryTyping() {
         this.resultDisplay.style.display = 'none';
-        this.rankingDisplay.style.display = 'none';
         this.startTyping();
     }
     
     showRanking() {
-        const results = JSON.parse(localStorage.getItem('typingResults') || '[]');
+        // 現在の問題のランキングを表示
+        const rankingKey = `typingResults_${this.currentProblem}`;
+        const results = JSON.parse(localStorage.getItem(rankingKey) || '[]');
         const top10 = results.slice(0, 10);
         
         this.rankingTableBody.innerHTML = '';
         
-        top10.forEach((result, index) => {
-            const date = new Date(result.date);
-            const dateStr = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-            
+        if (top10.length === 0) {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="rank">${index + 1}</td>
-                <td>${result.problemType}</td>
-                <td class="score">${result.score}</td>
-                <td class="error-count">${result.errorCount}</td>
-                <td class="date">${dateStr}</td>
-            `;
+            row.innerHTML = '<td colspan="7" style="text-align: center; color: #666;">まだ記録がありません</td>';
             this.rankingTableBody.appendChild(row);
-        });
-        
-        this.rankingDisplay.style.display = 'block';
+        } else {
+            top10.forEach((result, index) => {
+                const date = new Date(result.date);
+                const dateStr = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                
+                // 時間のフォーマット
+                const minutes = Math.floor(result.timeInSeconds / 60);
+                const seconds = Math.floor(result.timeInSeconds % 60);
+                const timeStr = minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank">${index + 1}</td>
+                    <td class="score">${result.score}</td>
+                    <td class="mode">${result.mode || '普通モード'}</td>
+                    <td class="time">${timeStr}</td>
+                    <td class="correct-count">${result.correctCount}</td>
+                    <td class="error-count">${result.errorCount}</td>
+                    <td class="date">${dateStr}</td>
+                `;
+                this.rankingTableBody.appendChild(row);
+            });
+        }
     }
     
-    closeRanking() {
-        this.rankingDisplay.style.display = 'none';
-    }
     
     startTimer() {
         this.timerInterval = setInterval(() => {
@@ -729,6 +743,12 @@ class TypingApp {
         } else {
             console.log('Key element not found for:', key);
         }
+        
+        // キーボード全体に赤い背景を一瞬表示
+        this.keyboardLayout.classList.add('error-background');
+        setTimeout(() => {
+            this.keyboardLayout.classList.remove('error-background');
+        }, 500);
     }
     
     showKeyCorrect(key) {
