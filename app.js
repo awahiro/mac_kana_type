@@ -579,10 +579,8 @@ class TypingApp {
                 const date = new Date(result.date);
                 const dateStr = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
                 
-                // 時間のフォーマット
-                const minutes = Math.floor(result.timeInSeconds / 60);
-                const seconds = Math.floor(result.timeInSeconds % 60);
-                const timeStr = minutes > 0 ? `${minutes}分${seconds}秒` : `${seconds}秒`;
+                // 時間のフォーマット（秒のみ表示）
+                const timeStr = `${Math.floor(result.timeInSeconds)}秒`;
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
