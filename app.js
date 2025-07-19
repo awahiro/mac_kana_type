@@ -17,6 +17,7 @@ class TypingApp {
         this.timerInterval = null;
         
         this.initializeElements();
+        this.loadSavedSelections();
         this.setupEventListeners();
         this.createKeyboard();
         this.loadProblems();
@@ -56,6 +57,7 @@ class TypingApp {
         this.modeRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 this.isEasyMode = e.target.value === 'easy';
+                this.saveModeSelection();
                 this.updateDisplay();
             });
         });
@@ -70,6 +72,7 @@ class TypingApp {
         
         this.problemSelect.addEventListener('change', (e) => {
             this.currentProblem = e.target.value;
+            this.saveProblemSelection();
             this.loadCurrentProblem();
             // 問題選択時に自動リセット
             if (this.isActive) {
@@ -520,6 +523,33 @@ class TypingApp {
         
         // ローカルストレージに保存
         localStorage.setItem(rankingKey, JSON.stringify(results));
+    }
+    
+    saveProblemSelection() {
+        localStorage.setItem('typingApp_currentProblem', this.currentProblem);
+    }
+    
+    saveModeSelection() {
+        localStorage.setItem('typingApp_isEasyMode', this.isEasyMode.toString());
+    }
+    
+    loadSavedSelections() {
+        // 前回の問題選択を復元
+        const savedProblem = localStorage.getItem('typingApp_currentProblem');
+        if (savedProblem) {
+            this.currentProblem = savedProblem;
+        }
+        
+        // 前回のモード選択を復元
+        const savedMode = localStorage.getItem('typingApp_isEasyMode');
+        if (savedMode !== null) {
+            this.isEasyMode = savedMode === 'true';
+            // ラジオボタンの状態を更新
+            const targetValue = this.isEasyMode ? 'easy' : 'normal';
+            this.modeRadios.forEach(radio => {
+                radio.checked = radio.value === targetValue;
+            });
+        }
     }
     
     getCurrentProblemName() {
