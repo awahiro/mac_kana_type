@@ -482,8 +482,8 @@ class TypingApp {
         const timeInSeconds = (this.endTime - this.startTime) / 1000;
         const timeInMinutes = timeInSeconds / 60;
         
-        // 点数計算: (正解タイプ文字数 - 不正解文字数 * 2) / 時間(分)
-        const score = Math.round((this.correctCount - this.errorCount * 2) / timeInMinutes);
+        // 点数計算
+        const score = this.calculateScore(this.correctCount, this.errorCount, timeInMinutes);
         
         // 結果をローカルストレージに保存
         this.saveResult(score, timeInSeconds);
@@ -531,6 +531,11 @@ class TypingApp {
     
     saveModeSelection() {
         localStorage.setItem('typingApp_isEasyMode', this.isEasyMode.toString());
+    }
+    
+    calculateScore(correctCount, errorCount, timeInMinutes) {
+        if (timeInMinutes <= 0) return 0;
+        return Math.round((correctCount - errorCount * 2) / timeInMinutes);
     }
     
     loadSavedSelections() {
@@ -658,10 +663,8 @@ class TypingApp {
         
         const elapsedMinutes = elapsedSeconds / 60;
         
-        // 点数計算: (正解タイプ文字数 - 不正解文字数 * 2) / 時間(分)
-        if (elapsedMinutes > 0) {
-            currentScore = Math.round((this.correctCount - this.errorCount * 2) / elapsedMinutes);
-        }
+        // 点数計算
+        currentScore = this.calculateScore(this.correctCount, this.errorCount, elapsedMinutes);
         
         // 小数点以下1桁まで表示
         this.timeDisplay.textContent = `${elapsedSeconds.toFixed(1)}秒`;
