@@ -47,6 +47,7 @@ class TypingApp {
         this.scoreDisplay = document.getElementById('scoreDisplay');
         this.correctDisplay = document.getElementById('correctDisplay');
         this.errorDisplay = document.getElementById('errorDisplay');
+        this.progressDisplay = document.getElementById('progressDisplay');
     }
     
     setupEventListeners() {
@@ -237,6 +238,7 @@ class TypingApp {
         this.currentText = this.practiceTexts[this.currentTextIndex];
         this.currentPosition = 0;
         this.updateDisplay();
+        this.updateProgressDisplay();
     }
     
     handleStartButtonClick() {
@@ -445,6 +447,7 @@ class TypingApp {
         } else {
             // 次のテキストに進む
             this.loadNewText();
+            this.updateProgressDisplay();
         }
     }
     
@@ -644,6 +647,17 @@ class TypingApp {
         this.scoreDisplay.textContent = '0';
         this.correctDisplay.textContent = '0';
         this.errorDisplay.textContent = '0';
+        this.updateProgressDisplay();
+    }
+    
+    updateProgressDisplay() {
+        if (this.practiceTexts.length > 0) {
+            const current = this.currentTextIndex + 1;
+            const total = this.practiceTexts.length;
+            this.progressDisplay.textContent = `${current}/${total}`;
+        } else {
+            this.progressDisplay.textContent = '1/1';
+        }
     }
     
     updateDisplay() {
