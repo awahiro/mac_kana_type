@@ -480,10 +480,9 @@ class TypingApp {
     
     calculateAndShowResult() {
         const timeInSeconds = (this.endTime - this.startTime) / 1000;
-        const timeInMinutes = timeInSeconds / 60;
         
         // 点数計算
-        const score = this.calculateScore(this.correctCount, this.errorCount, timeInMinutes);
+        const score = this.calculateScore(this.correctCount, this.errorCount, timeInSeconds);
         
         // 結果をローカルストレージに保存
         this.saveResult(score, timeInSeconds);
@@ -533,9 +532,15 @@ class TypingApp {
         localStorage.setItem('typingApp_isEasyMode', this.isEasyMode.toString());
     }
     
-    calculateScore(correctCount, errorCount, timeInMinutes) {
-        if (timeInMinutes <= 0) return 0;
-        return Math.round((correctCount - errorCount * 2) / timeInMinutes);
+    calculateScore(correctCount, errorCount, timeInSeconds) {
+        // 点数計算のロジック
+        // 正解数から間違い数の2倍を引き、時間で割ってスコアを算出
+        // 例: 正解数が190、間違い数が20、所要時間が60秒の場合
+        // 点数 = (190 - 20 * 2) * 1000 / 60 = 3166.67
+        // 例: 正解数が190、間違い数が20、所要時間が180秒の場合
+        // 点数 = (190 - 20 * 2) * 1000 / 180 = 1055.56
+        if (timeInSeconds <= 0) return 0;
+        return Math.round((correctCount - errorCount * 2) * 1000 / timeInSeconds);       
     }
     
     loadSavedSelections() {
@@ -661,10 +666,9 @@ class TypingApp {
             elapsedSeconds = (this.endTime - this.startTime) / 1000;
         }
         
-        const elapsedMinutes = elapsedSeconds / 60;
         
         // 点数計算
-        currentScore = this.calculateScore(this.correctCount, this.errorCount, elapsedMinutes);
+        currentScore = this.calculateScore(this.correctCount, this.errorCount, elapsedSeconds);
         
         // 小数点以下1桁まで表示
         this.timeDisplay.textContent = `${elapsedSeconds.toFixed(1)}秒`;
