@@ -2,7 +2,7 @@ class TypingApp {
     constructor() {
         this.currentText = '';
         this.currentPosition = 0;
-        this.isEasyMode = true;
+        this.mode = 'easy'; // 'easy', 'normal', 'expert'
         this.isActive = false;
         this.practiceTexts = [];
         this.currentTextIndex = 0;
@@ -56,7 +56,7 @@ class TypingApp {
         
         this.modeRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
-                this.isEasyMode = e.target.value === 'easy';
+                this.mode = e.target.value;
                 this.saveModeSelection();
                 this.updateDisplay();
             });
@@ -499,7 +499,7 @@ class TypingApp {
             timeInSeconds: timeInSeconds,
             problemId: this.currentProblem,
             problemType: this.getCurrentProblemName(),
-            mode: this.isEasyMode ? '簡単モード' : '普通モード',
+            mode: this.getModeDisplayName(),
             date: new Date().toISOString()
         };
         
@@ -529,7 +529,7 @@ class TypingApp {
     }
     
     saveModeSelection() {
-        localStorage.setItem('typingApp_isEasyMode', this.isEasyMode.toString());
+        localStorage.setItem('typingApp_mode', this.mode);
     }
     
     calculateScore(correctCount, errorCount, timeInSeconds) {
@@ -551,13 +551,12 @@ class TypingApp {
         }
         
         // 前回のモード選択を復元
-        const savedMode = localStorage.getItem('typingApp_isEasyMode');
-        if (savedMode !== null) {
-            this.isEasyMode = savedMode === 'true';
+        const savedMode = localStorage.getItem('typingApp_mode');
+        if (savedMode) {
+            this.mode = savedMode;
             // ラジオボタンの状態を更新
-            const targetValue = this.isEasyMode ? 'easy' : 'normal';
             this.modeRadios.forEach(radio => {
-                radio.checked = radio.value === targetValue;
+                radio.checked = radio.value === this.mode;
             });
         }
     }
@@ -565,6 +564,15 @@ class TypingApp {
     getCurrentProblemName() {
         const problem = this.problems.find(p => p.id === this.currentProblem);
         return problem ? problem.name : 'デフォルト問題';
+    }
+    
+    getModeDisplayName() {
+        switch(this.mode) {
+            case 'easy': return '簡単モード';
+            case 'normal': return '普通モード';
+            case 'expert': return '上級モード';
+            default: return '普通モード';
+        }
     }
     
     showResult(score, timeInSeconds) {
@@ -721,7 +729,7 @@ class TypingApp {
     updateKeyboardHighlight() {
         this.clearKeyboardHighlight();
         
-        if (!this.isActive || !this.isEasyMode) return;
+        if (!this.isActive || this.mode === 'normal' || this.mode === 'expert') return;
         
         const currentChar = this.currentText[this.currentPosition];
         if (!currentChar) return;
@@ -802,6 +810,9 @@ class TypingApp {
     
     showKeyCorrect(key) {
         console.log('Showing correct for key:', key);
+        // 上級モードでは緑枠を表示しない
+        if (this.mode === 'expert') return;
+        
         const keyElement = this.findKeyElement(key);
         console.log('Found key element:', keyElement);
         if (keyElement) {
