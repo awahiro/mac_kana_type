@@ -26,7 +26,7 @@ const KEYBOARD_CONFIG = {
             { key: '8', kana: 'ゆ', shift_kana: 'ゅ', finger: 'right-middle' },
             { key: '9', kana: 'よ', shift_kana: 'ょ', finger: 'right-ring' },
             { key: '0', kana: 'わ', shift_kana: 'を', finger: 'right-pinky' },
-            { key: '-', kana: 'ほ', finger: 'right-pinky' },
+            { key: '-', kana: 'ほ', shift_kana: 'ー', finger: 'right-pinky' },
             { key: '=', kana: 'へ', finger: 'right-pinky' },
             { key: 'Backspace', kana: '', finger: 'right-pinky', class: 'backspace-key' }
         ],
