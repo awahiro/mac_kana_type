@@ -88,8 +88,11 @@ class TypingApp {
         document.addEventListener('keydown', (e) => {
             e.preventDefault();
             
+
             // Shiftキーのハイライト（アクティブ状態に関係なく）
+            shiftPressed = false;
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
+                shiftPressed = true;
                 this.highlightShiftKey(e.code, true);
             }
             
@@ -103,7 +106,7 @@ class TypingApp {
                 // 物理キーコードを取得（Shift組み合わせの影響を受けない）
                 const physicalKey = this.getPhysicalKey(e.code);
                 const keyCode = ['ShiftLeft', 'ShiftRight'].includes(e.code) ? e.code : physicalKey;
-                this.handleKeyPress(keyCode, e.shiftKey);
+                this.handleKeyPress(keyCode, shiftPressed);
             } else {
                 // 非アクティブ時も視覚フィードバック
                 const physicalKey = this.getPhysicalKey(e.code);
