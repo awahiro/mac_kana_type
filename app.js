@@ -90,11 +90,10 @@ class TypingApp {
             
 
             // Shiftキーのハイライト（アクティブ状態に関係なく）
-            let shiftPressed = false;
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-                shiftPressed = true;
                 this.highlightShiftKey(e.code, true);
             }
+            console.log('Key down:', e.code, 'Shift pressed:', e.shiftKey, 'isActive:', this.isActive);
             
             // スペースキーでスタート（非アクティブ時のみ）
             if (e.code === 'Space' && !this.isActive) {
@@ -106,7 +105,7 @@ class TypingApp {
                 // 物理キーコードを取得（Shift組み合わせの影響を受けない）
                 const physicalKey = this.getPhysicalKey(e.code);
                 const keyCode = ['ShiftLeft', 'ShiftRight'].includes(e.code) ? e.code : physicalKey;
-                this.handleKeyPress(keyCode, shiftPressed);
+                this.handleKeyPress(keyCode, e.shiftKey);
             } else {
                 // 非アクティブ時も視覚フィードバック
                 const physicalKey = this.getPhysicalKey(e.code);
