@@ -287,6 +287,10 @@ class TypingApp {
         this.stopTimer();
         
         this.clearHighlights();
+        
+        // 問題を再読み込み
+        this.loadCurrentProblem();
+        
         this.updateDisplay();
     }
     

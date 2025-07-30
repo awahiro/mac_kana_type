@@ -184,6 +184,12 @@ const PROBLEM_FILES = [
         texts: []
     },
     {
+        id: 'aiueo',
+        name: 'あいうえお',
+        path: './problem/aiueo.txt',
+        texts: []
+    },
+    {
         id: 'basic_hiragana',
         name: '基本文字',
         path: './problem/basic_hiragana.txt',
