@@ -90,7 +90,7 @@ class TypingApp {
             
 
             // Shiftキーのハイライト（アクティブ状態に関係なく）
-            shiftPressed = false;
+            let shiftPressed = false;
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
                 shiftPressed = true;
                 this.highlightShiftKey(e.code, true);
