@@ -246,9 +246,12 @@ h1 {
     background-color: #f3e5f5; /* 薄い紫 - 中指 */
 }
 
-.key[data-finger="left-index"],
-.key[data-finger="right-index"] {
+.key[data-finger="left-index"] {
     background-color: #e3f2fd; /* 薄い青 - 人差指 */
+}
+
+.key[data-finger="right-index"] {
+    background-color: #b4dcf9; /* 薄い青 - 人差指 */
 }
 
 .key[data-finger="left-thumb"],
