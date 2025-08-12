@@ -15,16 +15,16 @@ const KEYBOARD_CONFIG = {
     
     layout: [
         [
-            { key: '`', kana: 'ろ', finger: 'left-pinky' },
-            { key: '1', kana: 'ぬ', finger: 'left-pinky' },
+            { key: '`', kana: 'ろ', finger: 'left-ring' },
+            { key: '1', kana: 'ぬ', finger: 'left-ring' },
             { key: '2', kana: 'ふ', finger: 'left-ring' },
             { key: '3', kana: 'あ', shift_kana: 'ぁ', finger: 'left-middle' },
             { key: '4', kana: 'う', shift_kana: 'ぅ', finger: 'left-index' },
             { key: '5', kana: 'え', shift_kana: 'ぇ', finger: 'left-index' },
-            { key: '6', kana: 'お', shift_kana: 'ぉ', finger: 'left-index' },
+            { key: '6', kana: 'お', shift_kana: 'ぉ', finger: 'right-index' },
             { key: '7', kana: 'や', shift_kana: 'ゃ', finger: 'right-index' },
             { key: '8', kana: 'ゆ', shift_kana: 'ゅ', finger: 'right-middle' },
-            { key: '9', kana: 'よ', shift_kana: 'ょ', finger: 'right-middle' },
+            { key: '9', kana: 'よ', shift_kana: 'ょ', finger: 'right-ring' },
             { key: '0', kana: 'わ', shift_kana: 'を', finger: 'right-ring' },
             { key: '-', kana: 'ほ', shift_kana: 'ー', finger: 'right-ring' },
             { key: '=', kana: 'へ', finger: 'right-ring' },
@@ -41,7 +41,7 @@ const KEYBOARD_CONFIG = {
             { key: 'u', kana: 'な', finger: 'right-index' },
             { key: 'i', kana: 'に', finger: 'right-middle' },
             { key: 'o', kana: 'ら', finger: 'right-ring' },
-            { key: 'p', kana: 'せ', finger: 'right-ring' },
+            { key: 'p', kana: 'せ', finger: 'right-pinky' },
             { key: '[', kana: '゛', finger: 'right-pinky' },
             { key: ']', kana: '゜', finger: 'right-pinky' },
             { key: '\\', kana: 'む', finger: 'right-pinky' }

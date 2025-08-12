@@ -241,10 +241,14 @@ h1 {
     background-color: #e8f5e8; /* 薄い緑 - 薬指 */
 }
 
-.key[data-finger="left-middle"],
-.key[data-finger="right-middle"] {
+.key[data-finger="left-middle"] {
     background-color: #f3e5f5; /* 薄い紫 - 中指 */
 }
+
+.key[data-finger="right-middle"] {
+    background-color: #f2c7f8; /* 薄い紫 - 中指 */
+}
+
 
 .key[data-finger="left-index"] {
     background-color: #e3f2fd; /* 薄い青 - 人差指 */
@@ -393,14 +397,20 @@ h1 {
     background-color: #e8f5e8; /* 薄い緑 - 薬指 */
 }
 
-.finger[data-finger="left-middle"],
-.finger[data-finger="right-middle"] {
+.finger[data-finger="left-middle"]{
     background-color: #f3e5f5; /* 薄い紫 - 中指 */
 }
 
-.finger[data-finger="left-index"],
-.finger[data-finger="right-index"] {
+.finger[data-finger="right-middle"] {
+    background-color: #f2c7f8; /* 薄い紫 - 中指 */
+}
+
+.finger[data-finger="left-index"]{
     background-color: #e3f2fd; /* 薄い青 - 人差指 */
+}
+
+.finger[data-finger="right-index"] {
+    background-color: #b4dcf9cd; /* 薄い青 - 人差指 */
 }
 
 .finger[data-finger="left-thumb"],
