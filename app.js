@@ -9,6 +9,10 @@ class TypingApp {
         this.problems = [...PROBLEM_FILES];
         this.currentProblem = 'default';
         
+        // 濁点入力の状態管理
+        this.waitingForDakuten = false;
+        this.lastBaseChar = null;
+        
         // 結果計測用の変数
         this.startTime = null;
         this.endTime = null;
@@ -259,6 +263,10 @@ class TypingApp {
         this.currentPosition = 0;
         this.startButton.textContent = 'リセット';
         
+        // 濁点入力状態をリセット
+        this.waitingForDakuten = false;
+        this.lastBaseChar = null;
+        
         // 結果計測の初期化
         this.startTime = new Date();
         this.endTime = null;
@@ -323,6 +331,9 @@ class TypingApp {
             this.showKeyCorrect(key);
             this.correctCount++;
             this.currentPosition++;
+            // 濁点待ち状態をリセット
+            this.waitingForDakuten = false;
+            this.lastBaseChar = null;
             this.updateDisplay();
             this.updateStatsDisplay();
             
@@ -356,17 +367,23 @@ class TypingApp {
             }
             
             if (isDakutenExpected || isHandakutenExpected) {
-                // 基となる文字が入力された場合、正しいキーとして処理
-                // ただし、現在位置は進めずに濁点・半濁点の入力を待つ
+                // 基となる文字が入力された場合、濁点・半濁点の入力を待つ状態にする
                 this.showKeyCorrect(key);
                 this.correctCount++;
+                this.waitingForDakuten = true;
+                this.lastBaseChar = baseChar;
                 this.updateStatsDisplay();
-                console.log('Base character entered, waiting for dakuten/handakuten');
+                console.log('Base character entered, waiting for dakuten/handakuten:', baseChar);
                 return;
             }
             
             console.log('Key mismatch:', inputKana, '!==', expectedChar);
-            console.log('Available mappings:', Object.entries(KEYBOARD_CONFIG.kanaToKey).filter(([kana, data]) => kana === expectedChar));
+            console.log('Available mappings:', Object.entries(KEYBOARD_CONFIG.kanaToKey).filter(([kana]) => kana === expectedChar));
+            
+            // 濁点待ち状態をリセット
+            this.waitingForDakuten = false;
+            this.lastBaseChar = null;
+            
             this.showKeyError(key);
             this.errorCount++;
             this.updateStatsDisplay();
@@ -375,9 +392,18 @@ class TypingApp {
     
     handleDakutenInput(dakutenChar, key) {
         console.log('Dakuten input:', dakutenChar, 'for key:', key);
+        console.log('Waiting for dakuten:', this.waitingForDakuten, 'Last base char:', this.lastBaseChar);
         
         const expectedChar = this.currentText[this.currentPosition];
         console.log('Expected char:', expectedChar);
+        
+        // 濁点待ち状態でない場合はエラー
+        if (!this.waitingForDakuten) {
+            this.showKeyError(key);
+            this.errorCount++;
+            this.updateStatsDisplay();
+            return;
+        }
         
         // 期待される文字が濁点・半濁点文字かチェック
         let isDakutenChar = false;
@@ -406,12 +432,13 @@ class TypingApp {
         
         console.log('Is dakuten char:', isDakutenChar, 'Is handakuten char:', isHandakutenChar, 'Base char:', baseChar);
         
-        if (isDakutenChar || isHandakutenChar) {
-            // 期待される文字が濁点・半濁点文字なら、基となる文字が入力されているかチェック
-            // または、基となる文字の入力も許可する
+        // 期待される文字が濁点・半濁点文字で、かつ前に入力された基本文字が対応する場合のみ正解
+        if ((isDakutenChar || isHandakutenChar) && this.lastBaseChar === baseChar) {
             this.showKeyCorrect(key);
             this.correctCount++;
             this.currentPosition++;
+            this.waitingForDakuten = false;
+            this.lastBaseChar = null;
             this.updateDisplay();
             this.updateStatsDisplay();
             
