@@ -63,9 +63,9 @@ const KEYBOARD_CONFIG = {
         ],
         [
             { key: 'ShiftLeft', kana: '', finger: 'left-pinky', class: 'shift-key' },
-            { key: 'z', kana: 'つ', shift_kana: 'っ', finger: 'left-pinky' },
-            { key: 'x', kana: 'さ', finger: 'left-ring' },
-            { key: 'c', kana: 'そ', finger: 'left-middle' },
+            { key: 'z', kana: 'つ', shift_kana: 'っ', finger: 'left-ring' },
+            { key: 'x', kana: 'さ', finger: 'left-middle' },
+            { key: 'c', kana: 'そ', finger: 'left-index' },
             { key: 'v', kana: 'ひ', finger: 'left-index' },
             { key: 'b', kana: 'こ', finger: 'left-index' },
             { key: 'n', kana: 'み', finger: 'right-index' },
@@ -211,6 +211,24 @@ const PROBLEM_FILES = [
         id: 'short_words',
         name: '短い単語',
         path: './problem/short_words.txt',
+        texts: []
+    },
+    {
+        id: 'short_sentences01',
+        name: '短い文1',
+        path: './problem/short_sentences01.txt',
+        texts: []
+    },
+    {
+        id: 'short_sentences02',
+        name: '短い文2',
+        path: './problem/short_sentences02.txt',
+        texts: []
+    },
+    {
+        id: 'short_sentences03',
+        name: '短い文3',
+        path: './problem/short_sentences03.txt',
         texts: []
     },
     {

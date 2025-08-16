@@ -128,6 +128,7 @@ macでのかな入力用タイピング練習WEBアプリケーション。USキ
 - start.txt - 初心者向け
 - basic_hiragana.txt - 基本ひらがな
 - short_words.txt - 短い単語
+- short_sentences01.txt - 短い文章
 - common_words.txt - 一般的な単語
 - sentences.txt - 文章練習
 - dakuten_test.txt - 濁点練習
