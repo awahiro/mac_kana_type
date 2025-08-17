@@ -63,9 +63,9 @@ const KEYBOARD_CONFIG = {
         ],
         [
             { key: 'ShiftLeft', kana: '', finger: 'left-pinky', class: 'shift-key' },
-            { key: 'z', kana: 'つ', shift_kana: 'っ', finger: 'left-ring' },
-            { key: 'x', kana: 'さ', finger: 'left-middle' },
-            { key: 'c', kana: 'そ', finger: 'left-index' },
+            { key: 'z', kana: 'つ', shift_kana: 'っ', finger: 'left-pinky' },
+            { key: 'x', kana: 'さ', finger: 'left-ring' },
+            { key: 'c', kana: 'そ', finger: 'left-middle' },
             { key: 'v', kana: 'ひ', finger: 'left-index' },
             { key: 'b', kana: 'こ', finger: 'left-index' },
             { key: 'n', kana: 'み', finger: 'right-index' },
