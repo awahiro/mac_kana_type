@@ -13,6 +13,9 @@ class TypingApp {
         this.waitingForDakuten = false;
         this.lastBaseChar = null;
         
+        // 入力文字表示
+        this.currentDisplayChar = '';
+        
         // 結果計測用の変数
         this.startTime = null;
         this.endTime = null;
@@ -38,6 +41,9 @@ class TypingApp {
         this.textFileInput = document.getElementById('textFileInput');
         this.loadTextButton = document.getElementById('loadTextButton');
         this.problemSelect = document.getElementById('problemSelect');
+        
+        // 入力文字表示用の要素
+        this.inputTextDisplay = document.getElementById('inputText');
         
         // 結果表示用の要素
         this.resultDisplay = document.getElementById('resultDisplay');
@@ -105,17 +111,22 @@ class TypingApp {
                 return;
             }
             
+            // 物理キーコードを取得（Shift組み合わせの影響を受けない）
+            const physicalKey = this.getPhysicalKey(e.code);
+            const keyCode = ['ShiftLeft', 'ShiftRight'].includes(e.code) ? e.code : physicalKey;
+            
             if (this.isActive) {
-                // 物理キーコードを取得（Shift組み合わせの影響を受けない）
-                const physicalKey = this.getPhysicalKey(e.code);
-                const keyCode = ['ShiftLeft', 'ShiftRight'].includes(e.code) ? e.code : physicalKey;
                 this.handleKeyPress(keyCode, e.shiftKey);
             } else {
                 // 非アクティブ時も視覚フィードバック
-                const physicalKey = this.getPhysicalKey(e.code);
                 if (physicalKey && !['ShiftLeft', 'ShiftRight'].includes(e.code)) {
                     this.showKeyPressed(physicalKey);
                 }
+            }
+            
+            // アクティブ・非アクティブ関係なく入力文字を表示
+            if (physicalKey && !['ShiftLeft', 'ShiftRight'].includes(e.code)) {
+                this.handleInputDisplay(physicalKey, e.shiftKey);
             }
         });
         
@@ -130,7 +141,7 @@ class TypingApp {
     createKeyboard() {
         this.keyboardLayout.innerHTML = '';
         
-        KEYBOARD_CONFIG.layout.forEach((row, rowIndex) => {
+        KEYBOARD_CONFIG.layout.forEach((row) => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row';
             
@@ -267,6 +278,10 @@ class TypingApp {
         this.waitingForDakuten = false;
         this.lastBaseChar = null;
         
+        // 表示文字をリセット
+        this.currentDisplayChar = '';
+        this.updateInputDisplay();
+        
         // 結果計測の初期化
         this.startTime = new Date();
         this.endTime = null;
@@ -298,6 +313,10 @@ class TypingApp {
         
         // 問題を再読み込み
         this.loadCurrentProblem();
+        
+        // 表示文字をリセット
+        this.currentDisplayChar = '';
+        this.updateInputDisplay();
         
         this.updateDisplay();
     }
@@ -331,10 +350,13 @@ class TypingApp {
             this.showKeyCorrect(key);
             this.correctCount++;
             this.currentPosition++;
+            
+            
             // 濁点待ち状態をリセット
             this.waitingForDakuten = false;
             this.lastBaseChar = null;
             this.updateDisplay();
+            this.updateInputDisplay();
             this.updateStatsDisplay();
             
             if (this.currentPosition >= this.currentText.length) {
@@ -372,6 +394,8 @@ class TypingApp {
                 this.correctCount++;
                 this.waitingForDakuten = true;
                 this.lastBaseChar = baseChar;
+                
+                
                 this.updateStatsDisplay();
                 console.log('Base character entered, waiting for dakuten/handakuten:', baseChar);
                 return;
@@ -437,9 +461,12 @@ class TypingApp {
             this.showKeyCorrect(key);
             this.correctCount++;
             this.currentPosition++;
+            
+            
             this.waitingForDakuten = false;
             this.lastBaseChar = null;
             this.updateDisplay();
+            this.updateInputDisplay();
             this.updateStatsDisplay();
             
             if (this.currentPosition >= this.currentText.length) {
@@ -742,6 +769,12 @@ class TypingApp {
         this.updateFingerHighlight();
     }
     
+    updateInputDisplay() {
+        if (this.inputTextDisplay) {
+            this.inputTextDisplay.textContent = this.currentDisplayChar;
+        }
+    }
+    
     updateTextDisplay() {
         if (!this.currentText) return;
         
@@ -887,6 +920,42 @@ class TypingApp {
             setTimeout(() => {
                 keyElement.classList.remove('key-pressed');
             }, 200);
+        }
+    }
+    
+    handleInputDisplay(key, shiftPressed = false) {
+        // 常時入力文字を表示する処理
+        const inputKana = this.keyToKana(key, shiftPressed);
+        
+        // 濁点・半濁点の処理
+        if (inputKana === '゛' || inputKana === '゜') {
+            this.handleDisplayDakutenInput(inputKana);
+            return;
+        }
+        
+        // 表示文字を更新
+        this.currentDisplayChar = inputKana;
+        this.updateInputDisplay();
+    }
+    
+    handleDisplayDakutenInput(dakutenChar) {
+        // 濁点・半濁点処理（表示用）
+        if (!this.currentDisplayChar) return;
+        
+        let targetChar = null;
+        
+        if (dakutenChar === '゛') {
+            // 濁点処理
+            targetChar = KEYBOARD_CONFIG.dakutenMapping[this.currentDisplayChar];
+        } else if (dakutenChar === '゜') {
+            // 半濁点処理
+            targetChar = KEYBOARD_CONFIG.handakutenMapping[this.currentDisplayChar];
+        }
+        
+        if (targetChar) {
+            // 濁点・半濁点付きの文字に置き換え
+            this.currentDisplayChar = targetChar;
+            this.updateInputDisplay();
         }
     }
     

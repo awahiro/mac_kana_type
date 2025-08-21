@@ -175,8 +175,27 @@ h1 {
     border-radius: 5px;
     min-height: 100px;
     display: flex;
-    align-items: end;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 10px;
+}
+
+/* 入力文字表示エリア */
+.input-display {
+    padding: 10px 15px;
+    /* background-color: #e8f5e9; */
+    /* border: 2px solid #4CAF50; */
+    border-radius: 8px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #18b228;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #problemText {
