@@ -34,7 +34,7 @@ const KEYBOARD_CONFIG = {
             { key: 'Tab', kana: '', finger: 'left-pinky', class: 'tab-key' },
             { key: 'q', kana: 'た', finger: 'left-pinky' },
             { key: 'w', kana: 'て', finger: 'left-ring' },
-            { key: 'e', kana: 'い', finger: 'left-middle' },
+            { key: 'e', kana: 'い', shift_kana: 'ぃ', finger: 'left-middle' },
             { key: 'r', kana: 'す', finger: 'left-index' },
             { key: 't', kana: 'か', finger: 'left-index' },
             { key: 'y', kana: 'ん', finger: 'right-index' },
