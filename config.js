@@ -15,8 +15,8 @@ const KEYBOARD_CONFIG = {
     
     layout: [
         [
-            { key: '`', kana: 'ろ', finger: 'left-ring' },
-            { key: '1', kana: 'ぬ', finger: 'left-ring' },
+            { key: '`', kana: 'ろ', finger: 'left-pinky' },
+            { key: '1', kana: 'ぬ', finger: 'left-pinky' },
             { key: '2', kana: 'ふ', finger: 'left-ring' },
             { key: '3', kana: 'あ', shift_kana: 'ぁ', finger: 'left-middle' },
             { key: '4', kana: 'う', shift_kana: 'ぅ', finger: 'left-index' },
@@ -26,8 +26,8 @@ const KEYBOARD_CONFIG = {
             { key: '8', kana: 'ゆ', shift_kana: 'ゅ', finger: 'right-middle' },
             { key: '9', kana: 'よ', shift_kana: 'ょ', finger: 'right-ring' },
             { key: '0', kana: 'わ', shift_kana: 'を', finger: 'right-ring' },
-            { key: '-', kana: 'ほ', shift_kana: 'ー', finger: 'right-ring' },
-            { key: '=', kana: 'へ', finger: 'right-ring' },
+            { key: '-', kana: 'ほ', shift_kana: 'ー', finger: 'right-pinky' },
+            { key: '=', kana: 'へ', finger: 'right-pinky' },
             { key: 'Backspace', kana: '', finger: 'right-pinky', class: 'backspace-key' }
         ],
         [
